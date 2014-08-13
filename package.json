@@ -1,0 +1,29 @@
+{
+  "name": "explicit",
+  "version": "0.0.1",
+  "description": "System to explicitly specify the way a method works.",
+  "main": "index.js",
+  "scripts": {
+    "test": "lab -c"
+  },
+  "repository":  {
+    "type": "git",
+    "url": "https://github.com/explicitjs/explicit.git"
+  },
+  "keywords": [
+    "augmentation",
+    "extension",
+    "documentation",
+    "annotation"
+  ],
+  "author": "Martin Heidegger <martin.heidegger@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "lab": "~4.0.1",
+    "nodemock": "~0.3.4",
+    "lab-lint": "0.0.3"
+  },
+  "dependencies": {
+    "joi": "~4.6.2"
+  }
+}
