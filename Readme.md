@@ -1,3 +1,5 @@
+![build status](https://travis-ci.org/explicitjs/explicit.svg?branch=master)
+
 # Explicit.js
 
 Explicit.js allows you to explicitly annotate, document and augment your methods.
