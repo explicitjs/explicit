@@ -1,4 +1,5 @@
 ![build status](https://travis-ci.org/explicitjs/explicit.svg?branch=master)
+[![Code Climate](https://codeclimate.com/github/explicitjs/explicit/badges/gpa.svg)](https://codeclimate.com/github/explicitjs/explicit)
 
 # Explicit.js
 
