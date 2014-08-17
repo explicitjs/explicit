@@ -5,7 +5,8 @@ var Lab = require("lab"),
     expect = Lab.expect,
     describe = lab.describe,
     it = lab.it,
-    explicit = require("../lib");
+    explicit = require("../lib"),
+    PluginMap = require("../lib/PluginMap");
 
 describe("a regular explicit call should", function () {
     it("just pass", function (done) {
@@ -61,6 +62,13 @@ describe("using explicit should allow modification of", function () {
             definition.$ = noop;
         });
         expect(result).to.be.eql([noop, noop]);
+        done();
+    });
+});
+
+describe("using plugins", function () {
+    it("should allow 'null'", function (done) {
+        explicit({}, {plugins: null});
         done();
     });
 });

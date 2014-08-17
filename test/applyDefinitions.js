@@ -8,14 +8,15 @@ var Lab = require("lab"),
     describe = lab.describe,
     it = lab.it,
     applyDefinitions = require("../lib/applyDefinitions"),
-    nodemock = require("nodemock");
+    nodemock = require("nodemock"),
+    PluginMap = require("../lib/PluginMap");
 
 
 describe("Applying simple definitions", function () {
 
     function expect(a, b) {
         Lab.expect(applyDefinitions(a, {
-            plugins: []
+            plugins: new PluginMap()
         })).to.be.deep.equal(b);
     }
 
@@ -78,7 +79,7 @@ describe("Attempt using of plugins", function () {
             return undefined;
         }
         expect(applyDefinitions({$one: true, $: op}, {
-            plugins: [{}]
+            plugins: new PluginMap({})
         })).to.equal(op);
         done();
     });
@@ -91,7 +92,7 @@ describe("Attempt using of plugins", function () {
                 $: mock.test,
                 $test: true
             }, {
-                plugins: [{
+                plugins: new PluginMap({
                     name: "test",
                     augment: function (definition, method) {
                         expect(definition.$).to.eql(method);
@@ -100,7 +101,7 @@ describe("Attempt using of plugins", function () {
                             return method(a + 1);
                         };
                     }
-                }]
+                })
             });
         expect(method(1)).to.equal(3);
         expect(method.$wraps).to.deep.equal([originalTest]);
@@ -119,7 +120,7 @@ describe("Attempt using of plugins", function () {
                 $b: true,
                 $c: true
             }, {
-                plugins: [{
+                plugins: new PluginMap([{
                     name: "b",
                     augment: function () {
                         return b;
@@ -129,7 +130,7 @@ describe("Attempt using of plugins", function () {
                     augment: function () {
                         return c;
                     }
-                }]
+                }])
             });
         expect(method).to.equal(c);
         expect(method.$wraps).to.deep.equal([b, a]);
@@ -144,12 +145,12 @@ describe("Attempt using of plugins", function () {
                 $: a,
                 $test: true
             }, {
-                plugins: [{
+                plugins: new PluginMap({
                     name: "test",
                     augment: function () {
                         return a;
                     }
-                }]
+                })
             });
         expect(method).to.equal(a);
         expect(method.$wraps).to.equal(undefined);
@@ -165,12 +166,12 @@ describe("Attempt using of plugins", function () {
             $: op,
             $test: true
         }, {
-            plugins: [{
+            plugins: new PluginMap({
                 name: "test",
                 attach: function (definition, method) {
                     method.foo = "bar";
                 }
-            }]
+            })
         });
         expect(result).to.equal(op);
         expect(result.foo).to.equal("bar");
@@ -187,12 +188,12 @@ describe("Attempt using of plugins", function () {
                 $: op,
                 $test: true
             }, {
-                plugins: [{
+                plugins: new PluginMap({
                     name: "test",
                     augment: function () {
                         return undefined;
                     }
-                }]
+                })
             });
         } catch (e) {
             expect(e.message).to.equal("Augmentation: The plugin 'test' does not return a method.");

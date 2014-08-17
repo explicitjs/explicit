@@ -48,6 +48,24 @@ describe("filling a plugin property of options should", function () {
         });
         done();
     });
+
+    it("work if a plugins was given", function (done) {
+        expect(assertPlugin({
+            plugins: 2
+        }, 1)).to.be.deep.equal({
+            plugins: [1, 2]
+        });
+        done();
+    });
+
+    it("work if only the searched was given", function (done) {
+        expect(assertPlugin({
+            plugins: 1
+        }, 1)).to.be.deep.equal({
+            plugins: 1
+        });
+        done();
+    });
 });
 
 exports.lab = lab;

@@ -7,7 +7,8 @@ var Lab = require("lab"),
     it = lab.it,
     joi = require("joi"),
     explicit = require("../../lib"),
-    validate = require("../../lib/validate");
+    validate = require("../../lib/validate"),
+    PluginMap = require("../../lib/PluginMap");
 
 function firstKey(object) {
     var key;
@@ -96,13 +97,13 @@ describe("Validating arguments after they have been extended by another plugin",
             $test: true,
             $: noop
         }, {
-            plugins: [{
+            plugins: {
                 name: "test",
                 validate: validate(joi.boolean()),
                 attach: function (definition, method) {
                     method.$args.unshift(joi.string());
                 }
-            }]
+            }
         });
 
         method.valid("a", 1);
