@@ -32,9 +32,7 @@ function makeObject(argList) {
     var result = {};
     argList.forEach(function (arg) {
         arg = firstKey(arg);
-        if (!/^\d+$/.test(arg.key)) {
-            result[arg.key] = arg.value;
-        }
+        result[arg.key] = arg.value;
     });
     return result;
 }
@@ -43,11 +41,31 @@ function makeObject(argList) {
 /*jslint unparam:true*/
 var matrix = {
     named: {
-        "named": function (name, schema) {
-            return schema.meta(name);
+        "named": {
+            one: function (name, schema) {
+                return schema.meta(name);
+            },
+            many: function () {
+                return Array.prototype.slice.apply(arguments);
+            }
         },
-        "not-named": function (name, schema) {
-            return schema;
+        "not-named": {
+            one: function (name, schema) {
+                return schema;
+            },
+            many: function () {
+                var args = Array.prototype.slice.apply(arguments),
+                    numberKeys = [];
+                args.forEach(function (entry, no) {
+                    Object.keys(entry).every(function (key) {
+                        var newVal = {};
+                        newVal[no] = entry[key];
+                        numberKeys.push(newVal);
+                        return true;
+                    });
+                });
+                return numberKeys;
+            }
         }
     },
     exec: {
@@ -133,47 +151,54 @@ function addMatrix(title, meta, exec) {
 
         if (!(isObject && !isNamed)) {
             it("should pass the arguments", function (done) {
-                var method = augment(noop, meta("a", joi.any()));
+                var method = augment(noop, meta.one("a", joi.any()));
 
-                expect(exec(method, [{a: "foo"}])).to.deep.eql(["foo"]);
+                expect(exec(method, meta.many({a: "foo"}))).to.deep.eql(["foo"]);
                 done();
             });
         }
 
         it("should validate the arguments", function (done) {
-            var method = augment(noop, meta("a", joi.string()));
+            var method = augment(noop, meta.one("a", joi.number()));
 
-            expectInvalid(exec, method, [{a: 1}], done);
+            expectInvalid(exec, method, meta.many({a: "ho"}), done);
         });
 
         it("should validate the arguments also the second time", function (done) {
-            var method = augment(noop, meta("a", joi.string()));
+            var method = augment(noop, meta.one("a", joi.number()));
 
-            expectInvalid(exec, method, [{a: 1}], function () {
+            expectInvalid(exec, method, meta.many({a: "ho"}), function () {
                 exec(method, []);
                 done();
             });
         });
 
-
         it("should not require a not-required argument", function (done) {
-            var method = augment(noop, meta("a", joi.any()));
+            var method = augment(noop, meta.one("a", joi.any()));
 
             exec(method, []);
             done();
         });
 
-        it("should not require a required argument", function (done) {
-            var method = augment(noop, meta("a", joi.any()).required());
+        it("should require a required argument", function (done) {
+            var method = augment(noop, meta.one("a", joi.any()).required());
 
             expectInvalid(exec, method, [], done);
         });
 
         if (!isObject) {
-            it("should add additional arguments", function (done) {
-                var method = augment(noop, meta("a", joi.any()));
+            it("should allow additional arguments", function (done) {
+                var method = augment(noop, meta.one("a", joi.any()));
 
-                expect(exec(method, [{a: 1}, {"1": 2}])).to.be.deep.equal([1, 2]);
+                expect(exec(method, meta.many({a: 1}, {"1": 2}))).to.be.deep.equal([1, 2]);
+                done();
+            });
+        }
+        if (isObject && isNamed) {
+            it("should allow unknown arguments", function (done) {
+                var method = augment(noop, meta.one("a", joi.any()));
+
+                expect(exec(method, meta.many({a: 1}, {b: 2}))).to.be.deep.equal([1]);
                 done();
             });
         }

@@ -28,6 +28,8 @@ module.exports = {
                 testSchema[name] = $arg;
                 $argNames.push(name);
             });
+
+            testSchema = Joi.object().keys(testSchema).unknown();
         }
 
         function applyObject(scope, object, args) {
