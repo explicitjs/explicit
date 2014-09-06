@@ -3,7 +3,7 @@
 
 # Explicit.js
 
-Explicit.js allows you to explicitly annotate, document and augment your methods.
+Explicit.js allows explicitl annotation, documentation and augmentation of JavaScript methods.
 
 ```bash
 npm i explicit joi -S
@@ -26,14 +26,14 @@ var object = explicit({
     }
 });
 
-object.foo(1); // should print "1"
+object.foo(1); // 1
 object.foo.valid(1); // will fail because the first argument is not allowed to be a string
 object.foo.validObject({
     bar: "Hello World"
-}); // should print "Hello World"
+}); // "Hello World"
 ```
 
-You can also add the ```$one``` parameter for single definitions.
+For single method definition add the  ```$one``` parameter.
 
 ```JavaScript
 var foo = explicit({
@@ -46,9 +46,9 @@ var foo = explicit({
     }
 });
 
-foo(1); // should print "1"
+foo(1); // 1
 foo.valid(1); // will fail because the first argument is not allowed to be a string
 foo.validObject({
     bar: "Hello World"
-}); // should print "Hello World"
+}); // "Hello World"
 ```
