@@ -1,12 +1,12 @@
 {
   "name": "explicit",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "System to explicitly specify the way a method works.",
   "main": "lib/index.js",
   "scripts": {
     "test": "lab -c"
   },
-  "repository":  {
+  "repository": {
     "type": "git",
     "url": "https://github.com/explicitjs/explicit.git"
   },
