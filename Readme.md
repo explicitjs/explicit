@@ -47,8 +47,24 @@ var foo = explicit({
 });
 
 foo(1); // 1
-foo.valid(1); // will fail because the first argument is not allowed to be a string
+foo.valid(1); // will fail because the first argument has to be a string
 foo.validObject({
     bar: "Hello World"
 }); // "Hello World"
+```
+
+And in case you want to make the assertion required you add the ```$assert``` parameter.
+
+```JavaScript
+var foo = explicit({
+    $one: true,
+    $assert: true, 
+    $args: [
+        joi.string().meta("bar")
+    ],
+    $: function (bar) {
+        console.info(bar);
+    }
+});
+foo(1); // will fail because the first argument has to be a string
 ```
