@@ -4,7 +4,14 @@
   "description": "System to explicitly specify the way a method works.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "lint": "standard",
+    "test": "npm run lint && mocha"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it"
+    ]
   },
   "repository": {
     "type": "git",
@@ -21,7 +28,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "nodemock": "~0.3.4"
+    "nodemock": "~0.3.4",
+    "standard": "^5.4.1"
   },
   "dependencies": {
     "joi": "^6.10.1"

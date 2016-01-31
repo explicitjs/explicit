@@ -1,5 +1,6 @@
 [![build status](https://travis-ci.org/explicitjs/explicit.svg?branch=master)](https://travis-ci.org/explicitjs/explicit)
 [![Code Climate](https://codeclimate.com/github/explicitjs/explicit/badges/gpa.svg)](https://codeclimate.com/github/explicitjs/explicit)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 # Explicit.js
 

@@ -1,9 +1,9 @@
-"use strict";
+'use strict'
 
-var validate = require("../../lib/validate"),
-    Joi = require("joi");
+var validate = require('../../lib/validate')
+var Joi = require('joi')
 
 module.exports = {
-    name: "async",
-    validate: validate(Joi.boolean())
-};
+  name: 'async',
+  validate: validate(Joi.boolean())
+}
