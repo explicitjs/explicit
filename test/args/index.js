@@ -1,14 +1,10 @@
 "use strict";
 
-var Lab = require("lab"),
-    lab = Lab.script(),
-    expect = Lab.expect,
-    describe = lab.describe,
-    it = lab.it,
-    joi = require("joi"),
-    explicit = require("../../lib"),
-    validate = require("../../lib/validate"),
-    PluginMap = require("../../lib/PluginMap");
+var expect = require('chai').expect
+var joi = require("joi")
+var explicit = require("../..")
+var validate = require("../../lib/validate")
+var PluginMap = require("../../lib/PluginMap")
 
 function firstKey(object) {
     var key;
@@ -215,5 +211,3 @@ function setupTestMatrix() {
 }
 
 setupTestMatrix();
-
-exports.lab = lab;

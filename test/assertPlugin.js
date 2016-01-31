@@ -1,11 +1,7 @@
 "use strict";
 
-var Lab = require("lab"),
-    lab = Lab.script(),
-    expect = Lab.expect,
-    describe = lab.describe,
-    it = lab.it,
-    assertPlugin = require("../lib/assertPlugin");
+var expect = require('chai').expect
+var assertPlugin = require("../lib/assertPlugin")
 
 describe("filling a plugin property of options should", function () {
     it("work if no plugin object were given", function (done) {
@@ -67,5 +63,3 @@ describe("filling a plugin property of options should", function () {
         done();
     });
 });
-
-exports.lab = lab;

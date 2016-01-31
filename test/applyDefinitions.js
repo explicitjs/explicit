@@ -1,21 +1,16 @@
 "use strict";
 
 /*jslint nomen: true*/
-
-var Lab = require("lab"),
-    lab = Lab.script(),
-    expect = Lab.expect,
-    describe = lab.describe,
-    it = lab.it,
-    applyDefinitions = require("../lib/applyDefinitions"),
-    nodemock = require("nodemock"),
-    PluginMap = require("../lib/PluginMap");
+var Chai = require('chai')
+var applyDefinitions = require("../lib/applyDefinitions")
+var nodemock = require("nodemock")
+var PluginMap = require("../lib/PluginMap")
 
 
 describe("Applying simple definitions", function () {
 
     function expect(a, b) {
-        Lab.expect(applyDefinitions(a, {
+        Chai.expect(applyDefinitions(a, {
             plugins: new PluginMap()
         })).to.be.deep.equal(b);
     }
@@ -72,7 +67,8 @@ describe("Applying simple definitions", function () {
 });
 
 describe("Attempt using of plugins", function () {
-    var expect = Lab.expect;
+
+    var expect = require('chai').expect
 
     it("should allow plugins that do nothing", function (done) {
         function op() {
@@ -202,5 +198,3 @@ describe("Attempt using of plugins", function () {
         throw new Error("Shouldn't arrive here");
     });
 });
-
-exports.lab = lab;

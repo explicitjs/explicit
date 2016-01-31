@@ -4,7 +4,7 @@
   "description": "System to explicitly specify the way a method works.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "lab -c"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -19,11 +19,11 @@
   "author": "Martin Heidegger <martin.heidegger@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "lab": "~4.0.1",
-    "nodemock": "~0.3.4",
-    "lab-lint": "0.0.3"
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "nodemock": "~0.3.4"
   },
   "dependencies": {
-    "joi": "~4.6.2"
+    "joi": "^7.2.3"
   }
 }

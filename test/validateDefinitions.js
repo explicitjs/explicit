@@ -2,12 +2,8 @@
 
 /*jslint nomen: true*/
 
-var Lab = require("lab"),
-    lab = Lab.script(),
-    expect = Lab.expect,
-    describe = lab.describe,
-    it = lab.it,
-    validateDefinitions = require("../lib/validate/definitions");
+var expect = require('chai').expect
+var validateDefinitions = require("../lib/validate/definitions")
 
 function noop() { return undefined; }
 
@@ -122,5 +118,3 @@ describe("Validation of definitions", function () {
         done();
     });
 });
-
-exports.lab = lab;

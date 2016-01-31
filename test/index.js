@@ -1,12 +1,8 @@
 "use strict";
 
-var Lab = require("lab"),
-    lab = Lab.script(),
-    expect = Lab.expect,
-    describe = lab.describe,
-    it = lab.it,
-    explicit = require("../lib"),
-    PluginMap = require("../lib/PluginMap");
+var expect = require('chai').expect
+var explicit = require("..")
+var PluginMap = require("../lib/PluginMap")
 
 describe("a regular explicit call should", function () {
     it("just pass", function (done) {
@@ -84,5 +80,3 @@ describe("using explicit should break with a", function () {
         throw new Error("No exception thrown.");
     });
 });
-
-exports.lab = lab;

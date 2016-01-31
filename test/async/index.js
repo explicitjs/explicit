@@ -1,11 +1,7 @@
 "use strict";
 
-var Lab = require("lab"),
-    lab = Lab.script(),
-    expect = Lab.expect,
-    describe = lab.describe,
-    it = lab.it,
-    explicit = require("../../lib");
+var expect = require('chai').expect
+var explicit = require("../..")
 
 function noop() {
     return undefined;
@@ -20,5 +16,3 @@ describe("Async definitions", function () {
         done();
     });
 });
-
-exports.lab = lab;
