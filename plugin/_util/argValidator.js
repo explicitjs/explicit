@@ -1,7 +1,6 @@
 'use strict'
 
 var Joi = require('joi')
-var util = require('util')
 
 module.exports = function createArgValidator (method) {
   var firstCall = true
@@ -57,7 +56,7 @@ module.exports = function createArgValidator (method) {
       initCall()
     }
 
-    if (!util.isArray(args)) {
+    if (!Array.isArray(args)) {
       throw new Error('Trying to apply non-array with applyValid: ' + args)
     }
 
