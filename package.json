@@ -1,6 +1,6 @@
 {
   "name": "explicit",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "description": "System to explicitly specify the way a method works.",
   "main": "lib/index.js",
   "scripts": {
