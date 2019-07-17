@@ -16,14 +16,14 @@ function validateAll (entries) {
 describe('Validation of definitions', () => {
   it('should just pass variables', done => {
     validateAll([
-      [ 1, {$one: true, _raw: true, _rawContent: 1} ],
-      [ true, {$one: true, _raw: true, _rawContent: true} ],
-      [ false, {$one: true, _raw: true, _rawContent: false} ],
-      [ 'hello', {$one: true, _raw: true, _rawContent: 'hello'} ],
-      [ noop, {$one: true, _raw: true, _rawContent: noop} ]
+      [1, { $one: true, _raw: true, _rawContent: 1 }],
+      [true, { $one: true, _raw: true, _rawContent: true }],
+      [false, { $one: true, _raw: true, _rawContent: false }],
+      ['hello', { $one: true, _raw: true, _rawContent: 'hello' }],
+      [noop, { $one: true, _raw: true, _rawContent: noop }]
     ])
-    validate(null, {$one: true, _raw: true, _rawContent: null})
-    validate(undefined, {$one: true, _raw: true, _rawContent: undefined})
+    validate(null, { $one: true, _raw: true, _rawContent: null })
+    validate(undefined, { $one: true, _raw: true, _rawContent: undefined })
     done()
   })
 
@@ -40,7 +40,7 @@ describe('Validation of definitions', () => {
       a: 1,
       test: noop
     }, {
-      a: {$one: true, _raw: true, _rawContent: 1},
+      a: { $one: true, _raw: true, _rawContent: 1 },
       test: { $: noop }
     })
     validate({
@@ -55,7 +55,7 @@ describe('Validation of definitions', () => {
     try {
       validateDefinitions({ $one: true, $: 'hi' })
     } catch (e) {
-      expect(e.name).to.be.eql('ValidationError')
+      expect(e.name).to.be.equal('ValidationError')
       return done()
     }
     throw new Error("Shouldn't reach here")
@@ -80,7 +80,7 @@ describe('Validation of definitions', () => {
     }, [{
       name: 'test',
       validate: value => {
-        expect(value).to.eql(1)
+        expect(value).to.equals(1)
         return 2
       }
     }])

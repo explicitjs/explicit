@@ -70,7 +70,7 @@ describe('Attempt using of plugins', function () {
     function op () {
       return undefined
     }
-    expect(applyDefinitions({$one: true, $: op}, {
+    expect(applyDefinitions({ $one: true, $: op }, {
       plugins: new PluginMap({})
     })).to.equal(op)
     done()
@@ -86,12 +86,10 @@ describe('Attempt using of plugins', function () {
     }, {
       plugins: new PluginMap({
         name: 'test',
-        augment: function (definition, method) {
+        augment: (definition, method) => {
           expect(definition.$).to.eql(method)
           expect(method).to.eql(originalTest)
-          return function (a) {
-            return method(a + 1)
-          }
+          return a => method(a + 1)
         }
       })
     })

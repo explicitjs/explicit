@@ -8,11 +8,9 @@ const validate = require('../../lib/validate')
 function firstKey (object) {
   var key
   for (key in object) {
-    if (object.hasOwnProperty(key)) {
-      return {
-        key,
-        value: object[key]
-      }
+    return {
+      key,
+      value: object[key]
     }
   }
 }
@@ -32,9 +30,9 @@ function makeObject (argList) {
 
 var matrix = {
   named: {
-    'named': {
+    named: {
       one: (name, schema) => schema.meta(name),
-      many: function () {
+      many () {
         return Array.prototype.slice.apply(arguments)
       }
     },
@@ -68,7 +66,7 @@ function noop () {
 }
 
 function augment (op) {
-  return explicit({$one: true, $args: Array.prototype.slice.apply(arguments, [1]), $: op})
+  return explicit({ $one: true, $args: Array.prototype.slice.apply(arguments, [1]), $: op })
 }
 
 function expectInvalid (exec, method, args, done, error) {
@@ -127,7 +125,7 @@ function addMatrix (title, meta, exec) {
       it('should pass the arguments', done => {
         const method = augment(noop, meta.one('a', joi.any()))
 
-        expect(exec(method, meta.many({a: 'foo'}))).to.deep.equal(['foo'])
+        expect(exec(method, meta.many({ a: 'foo' }))).to.deep.equal(['foo'])
         done()
       })
     }
@@ -135,13 +133,13 @@ function addMatrix (title, meta, exec) {
     it('should validate the arguments', done => {
       const method = augment(noop, meta.one('a', joi.number()))
 
-      expectInvalid(exec, method, meta.many({a: 'ho'}), done)
+      expectInvalid(exec, method, meta.many({ a: 'ho' }), done)
     })
 
     it('should validate the arguments also the second time', done => {
       const method = augment(noop, meta.one('a', joi.number()))
 
-      expectInvalid(exec, method, meta.many({a: 'ho'}), function () {
+      expectInvalid(exec, method, meta.many({ a: 'ho' }), function () {
         exec(method, [])
         done()
       })
@@ -155,24 +153,24 @@ function addMatrix (title, meta, exec) {
     })
 
     it('should require a required argument', done => {
-      var method = augment(noop, meta.one('a', joi.any()).required())
+      const method = augment(noop, meta.one('a', joi.any()).required())
 
       expectInvalid(exec, method, [], done)
     })
 
     if (!isObject) {
       it('should allow additional arguments', done => {
-        var method = augment(noop, meta.one('a', joi.any()))
+        const method = augment(noop, meta.one('a', joi.any()))
 
-        expect(exec(method, meta.many({a: 1}, {'1': 2}))).to.be.deep.equal([1, 2])
+        expect(exec(method, meta.many({ a: 1 }, { 1: 2 }))).to.be.deep.equal([1, 2])
         done()
       })
     }
     if (isObject && isNamed) {
       it('should allow unknown arguments', done => {
-        var method = augment(noop, meta.one('a', joi.any()))
+        const method = augment(noop, meta.one('a', joi.any()))
 
-        expect(exec(method, meta.many({a: 1}, {b: 2}))).to.be.deep.equal([1])
+        expect(exec(method, meta.many({ a: 1 }, { b: 2 }))).to.be.deep.equal([1])
         done()
       })
     }
@@ -180,8 +178,8 @@ function addMatrix (title, meta, exec) {
 }
 
 function setupTestMatrix () {
-  Object.keys(matrix.named).forEach(function (nKey) {
-    Object.keys(matrix.exec).forEach(function (eKey) {
+  Object.keys(matrix.named).forEach(nKey => {
+    Object.keys(matrix.exec).forEach(eKey => {
       addMatrix(`${nKey} arguments with '.${eKey}'`, matrix.named[nKey], matrix.exec[eKey])
     })
   })

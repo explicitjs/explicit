@@ -52,7 +52,7 @@ describe('using explicit should allow modification of', () => {
 
 describe('using plugins', () => {
   it("should allow 'null'", done => {
-    explicit({}, {plugins: null})
+    explicit({}, { plugins: null })
     done()
   })
 })
