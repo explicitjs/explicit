@@ -2,7 +2,7 @@
 
 var validate = require('../../lib/validate')
 var clone = Array.prototype.slice
-var Joi = require('joi')
+var Joi = require('@hapi/joi')
 var createArgValidator = require('../_util/argValidator')
 
 module.exports = {

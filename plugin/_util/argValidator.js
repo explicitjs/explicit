@@ -1,6 +1,6 @@
 'use strict'
 
-var Joi = require('joi')
+var Joi = require('@hapi/joi')
 
 module.exports = function createArgValidator (method) {
   var firstCall = true

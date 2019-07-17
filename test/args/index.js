@@ -1,7 +1,7 @@
 'use strict'
 
 var expect = require('chai').expect
-var joi = require('joi')
+var joi = require('@hapi/joi')
 var explicit = require('../..')
 var validate = require('../../lib/validate')
 
