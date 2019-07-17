@@ -1,9 +1,9 @@
 'use strict'
 
-var Chai = require('chai')
-var applyDefinitions = require('../lib/applyDefinitions')
-var nodemock = require('nodemock')
-var PluginMap = require('../lib/PluginMap')
+const Chai = require('chai')
+const applyDefinitions = require('../lib/applyDefinitions')
+const nodemock = require('nodemock')
+const PluginMap = require('../lib/PluginMap')
 
 describe('Applying simple definitions', function () {
   function expect (a, b) {

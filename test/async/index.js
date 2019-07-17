@@ -1,14 +1,11 @@
 'use strict'
 
-var expect = require('chai').expect
-var explicit = require('../..')
+const { expect } = require('chai')
+const explicit = require('../..')
+const noop = () => {}
 
-function noop () {
-  return undefined
-}
-
-describe('Async definitions', function () {
-  it('should be marked async', function (done) {
+describe('Async definitions', () => {
+  it('should be marked async', done => {
     expect(explicit.async({
       $one: true,
       $: noop

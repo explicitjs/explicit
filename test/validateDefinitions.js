@@ -1,20 +1,20 @@
 'use strict'
 
-var expect = require('chai').expect
-var validateDefinitions = require('../lib/validate/definitions')
+const { expect } = require('chai')
+const validateDefinitions = require('../lib/validate/definitions')
 
-function noop () { return undefined }
+const noop = () => {}
 
 function validate (before, after) {
-  expect(validateDefinitions(before, [])).to.deep.eql(after)
+  expect(validateDefinitions(before, [])).to.deep.equal(after)
 }
 
 function validateAll (entries) {
   entries.forEach(function (tuple) { validate(tuple[0], tuple[1]) })
 }
 
-describe('Validation of definitions', function () {
-  it('should just pass variables', function (done) {
+describe('Validation of definitions', () => {
+  it('should just pass variables', done => {
     validateAll([
       [ 1, {$one: true, _raw: true, _rawContent: 1} ],
       [ true, {$one: true, _raw: true, _rawContent: true} ],
@@ -27,7 +27,7 @@ describe('Validation of definitions', function () {
     done()
   })
 
-  it('should accept regular entries', function (done) {
+  it('should accept regular entries', done => {
     validate({}, {})
     validate({
       $one: true,
@@ -51,7 +51,7 @@ describe('Validation of definitions', function () {
     done()
   })
 
-  it('should break invalid names', function (done) {
+  it('should break invalid names', done => {
     try {
       validateDefinitions({ $one: true, $: 'hi' })
     } catch (e) {
@@ -61,7 +61,7 @@ describe('Validation of definitions', function () {
     throw new Error("Shouldn't reach here")
   })
 
-  it('should accept arrays', function (done) {
+  it('should accept arrays', done => {
     validate([], [])
     validate([{
       $: noop
@@ -71,7 +71,7 @@ describe('Validation of definitions', function () {
     done()
   })
 
-  it('should validate plugins', function (done) {
+  it('should validate plugins', done => {
     var result = validateDefinitions({
       test: {
         $test: 1,
@@ -79,12 +79,12 @@ describe('Validation of definitions', function () {
       }
     }, [{
       name: 'test',
-      validate: function (value) {
+      validate: value => {
         expect(value).to.eql(1)
         return 2
       }
     }])
-    expect(result).to.deep.eql({
+    expect(result).to.deep.equals({
       test: {
         $test: 2,
         $: noop
@@ -93,8 +93,8 @@ describe('Validation of definitions', function () {
     done()
   })
 
-  it('should still validate unused plugins', function (done) {
-    var result = validateDefinitions({
+  it('should still validate unused plugins', done => {
+    const result = validateDefinitions({
       test: {
         $: noop
       }
@@ -105,7 +105,7 @@ describe('Validation of definitions', function () {
         return 2
       }
     }])
-    expect(result).to.deep.eql({
+    expect(result).to.deep.equals({
       test: {
         $: noop,
         $test: 2

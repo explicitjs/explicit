@@ -1,7 +1,7 @@
 'use strict'
 
-var validate = require('../../lib/validate')
-var Joi = require('@hapi/joi')
+const validate = require('../../lib/validate')
+const Joi = require('@hapi/joi')
 
 module.exports = {
   name: 'async',

@@ -1,23 +1,20 @@
 'use strict'
 
-var Joi = require('@hapi/joi')
+const Joi = require('@hapi/joi')
 
 module.exports = function createArgValidator (method) {
   var firstCall = true
-  var $argsLength
-  var $argNames
-  var testSchema
-  var helperObject = {}
+  const $argsLength = method.$args.length
+  const $argNames = []
+  const helperObject = {}
+  let testSchema = {}
 
   function initCall () {
     firstCall = false
-    $argsLength = method.$args.length
-    testSchema = {}
-    $argNames = []
 
     method.$args.forEach(function ($arg, no) {
       $arg = Joi.compile($arg)
-      var name = $arg.describe().meta || no
+      const name = $arg.describe().meta || no
       testSchema[name] = $arg
       $argNames.push(name)
     })
@@ -26,9 +23,6 @@ module.exports = function createArgValidator (method) {
   }
 
   function applyObject (scope, object, args) {
-    var i
-    var res
-
     if (firstCall) {
       initCall()
     }
@@ -37,7 +31,7 @@ module.exports = function createArgValidator (method) {
       args = []
     }
 
-    res = Joi.validate(object, testSchema)
+    let res = Joi.validate(object, testSchema)
 
     if (res.error) {
       throw res.error
@@ -45,7 +39,7 @@ module.exports = function createArgValidator (method) {
 
     res = res.value
 
-    for (i = 0; i < $argsLength; i += 1) {
+    for (let i = 0; i < $argsLength; i += 1) {
       args[i] = res[$argNames[i]]
     }
     return method.apply(scope, args)
@@ -57,10 +51,10 @@ module.exports = function createArgValidator (method) {
     }
 
     if (!Array.isArray(args)) {
-      throw new Error('Trying to apply non-array with applyValid: ' + args)
+      throw new Error(`Trying to apply non-array with applyValid: ${args}`)
     }
 
-    for (var i = 0; i < $argsLength; i += 1) {
+    for (let i = 0; i < $argsLength; i += 1) {
       helperObject[$argNames[i]] = args[i]
     }
 
@@ -68,7 +62,7 @@ module.exports = function createArgValidator (method) {
   }
 
   return {
-    applyObject: applyObject,
-    applyArray: applyArray
+    applyObject,
+    applyArray
   }
 }

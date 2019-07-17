@@ -1,16 +1,16 @@
 'use strict'
 
-var expect = require('chai').expect
-var joi = require('@hapi/joi')
-var explicit = require('../..')
-var validate = require('../../lib/validate')
+const { expect } = require('chai')
+const joi = require('@hapi/joi')
+const explicit = require('../..')
+const validate = require('../../lib/validate')
 
 function firstKey (object) {
   var key
   for (key in object) {
     if (object.hasOwnProperty(key)) {
       return {
-        key: key,
+        key,
         value: object[key]
       }
     }
@@ -18,9 +18,7 @@ function firstKey (object) {
 }
 
 function makeArray (argList) {
-  return argList.map(function (arg) {
-    return firstKey(arg).value
-  })
+  return argList.map(arg => firstKey(arg).value)
 }
 
 function makeObject (argList) {
@@ -35,20 +33,16 @@ function makeObject (argList) {
 var matrix = {
   named: {
     'named': {
-      one: function (name, schema) {
-        return schema.meta(name)
-      },
+      one: (name, schema) => schema.meta(name),
       many: function () {
         return Array.prototype.slice.apply(arguments)
       }
     },
     'not-named': {
-      one: function (name, schema) {
-        return schema
-      },
+      one: (name, schema) => schema,
       many: function () {
-        var args = Array.prototype.slice.apply(arguments)
-        var numberKeys = []
+        const args = Array.prototype.slice.apply(arguments)
+        const numberKeys = []
         args.forEach(function (entry, no) {
           Object.keys(entry).every(function (key) {
             var newVal = {}
@@ -62,18 +56,10 @@ var matrix = {
     }
   },
   exec: {
-    applyObject: function (method, argList) {
-      return method.applyObject(null, makeObject(argList))
-    },
-    applyValid: function (method, argList) {
-      return method.applyValid(null, makeArray(argList))
-    },
-    valid: function (method, argList) {
-      return method.valid.apply(null, makeArray(argList))
-    },
-    validObject: function (method, argList) {
-      return method.validObject(makeObject(argList))
-    }
+    applyObject: (method, argList) => method.applyObject(null, makeObject(argList)),
+    applyValid: (method, argList) => method.applyValid(null, makeArray(argList)),
+    valid: (method, argList) => method.valid.apply(null, makeArray(argList)),
+    validObject: (method, argList) => method.validObject(makeObject(argList))
   }
 }
 
@@ -98,8 +84,8 @@ function expectInvalid (exec, method, args, done, error) {
   throw new Error('Expected exception not thrown.')
 }
 
-describe('Validating arguments after they have been extended by another plugin', function () {
-  it('should use the new argument from the proper position', function (done) {
+describe('Validating arguments after they have been extended by another plugin', () => {
+  it('should use the new argument from the proper position', done => {
     var method = explicit({
       $one: true,
       $args: [joi.number()],
@@ -109,7 +95,7 @@ describe('Validating arguments after they have been extended by another plugin',
       plugins: {
         name: 'test',
         validate: validate(joi.boolean()),
-        attach: function (definition, method) {
+        attach: (definition, method) => {
           method.$args.unshift(joi.string())
         }
       }
@@ -120,17 +106,15 @@ describe('Validating arguments after they have been extended by another plugin',
   })
 })
 
-describe('Validating an array', function () {
-  it("should fail if the argument isn't an array - doh", function (done) {
-    var method = explicit({
+describe('Validating an array', () => {
+  it("should fail if the argument isn't an array - doh", done => {
+    const method = explicit({
       $one: true,
       $args: [],
       $: noop
     })
 
-    expectInvalid(function (method, arg) {
-      method.applyValid(null, arg)
-    }, method, 'a', done, 'Error')
+    expectInvalid((method, arg) => method.applyValid(null, arg), method, 'a', done, 'Error')
   })
 })
 
@@ -138,24 +122,24 @@ function addMatrix (title, meta, exec) {
   var isObject = exec === matrix.exec.validObject || exec === matrix.exec.applyObject
   var isNamed = meta === matrix.named.named
 
-  describe('Validating ' + title + ' arguments', function () {
+  describe(`Validating ${title} arguments`, () => {
     if (!(isObject && !isNamed)) {
-      it('should pass the arguments', function (done) {
-        var method = augment(noop, meta.one('a', joi.any()))
+      it('should pass the arguments', done => {
+        const method = augment(noop, meta.one('a', joi.any()))
 
-        expect(exec(method, meta.many({a: 'foo'}))).to.deep.eql(['foo'])
+        expect(exec(method, meta.many({a: 'foo'}))).to.deep.equal(['foo'])
         done()
       })
     }
 
-    it('should validate the arguments', function (done) {
-      var method = augment(noop, meta.one('a', joi.number()))
+    it('should validate the arguments', done => {
+      const method = augment(noop, meta.one('a', joi.number()))
 
       expectInvalid(exec, method, meta.many({a: 'ho'}), done)
     })
 
-    it('should validate the arguments also the second time', function (done) {
-      var method = augment(noop, meta.one('a', joi.number()))
+    it('should validate the arguments also the second time', done => {
+      const method = augment(noop, meta.one('a', joi.number()))
 
       expectInvalid(exec, method, meta.many({a: 'ho'}), function () {
         exec(method, [])
@@ -163,21 +147,21 @@ function addMatrix (title, meta, exec) {
       })
     })
 
-    it('should not require a not-required argument', function (done) {
-      var method = augment(noop, meta.one('a', joi.any()))
+    it('should not require a not-required argument', done => {
+      const method = augment(noop, meta.one('a', joi.any()))
 
       exec(method, [])
       done()
     })
 
-    it('should require a required argument', function (done) {
+    it('should require a required argument', done => {
       var method = augment(noop, meta.one('a', joi.any()).required())
 
       expectInvalid(exec, method, [], done)
     })
 
     if (!isObject) {
-      it('should allow additional arguments', function (done) {
+      it('should allow additional arguments', done => {
         var method = augment(noop, meta.one('a', joi.any()))
 
         expect(exec(method, meta.many({a: 1}, {'1': 2}))).to.be.deep.equal([1, 2])
@@ -185,7 +169,7 @@ function addMatrix (title, meta, exec) {
       })
     }
     if (isObject && isNamed) {
-      it('should allow unknown arguments', function (done) {
+      it('should allow unknown arguments', done => {
         var method = augment(noop, meta.one('a', joi.any()))
 
         expect(exec(method, meta.many({a: 1}, {b: 2}))).to.be.deep.equal([1])
@@ -198,7 +182,7 @@ function addMatrix (title, meta, exec) {
 function setupTestMatrix () {
   Object.keys(matrix.named).forEach(function (nKey) {
     Object.keys(matrix.exec).forEach(function (eKey) {
-      addMatrix(nKey + " arguments with '." + eKey + "'", matrix.named[nKey], matrix.exec[eKey])
+      addMatrix(`${nKey} arguments with '.${eKey}'`, matrix.named[nKey], matrix.exec[eKey])
     })
   })
 }

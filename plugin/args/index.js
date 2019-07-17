@@ -1,32 +1,24 @@
 'use strict'
 
-var validate = require('../../lib/validate')
-var clone = Array.prototype.slice
-var Joi = require('@hapi/joi')
-var createArgValidator = require('../_util/argValidator')
+const validate = require('../../lib/validate')
+const clone = Array.prototype.slice
+const Joi = require('@hapi/joi')
+const createArgValidator = require('../_util/argValidator')
 
 module.exports = {
   name: 'args',
   validate: validate(Joi.array().default([])),
-  attach: function (definition, method) {
+  attach (definition, method) {
     method.$args = definition.$args
 
-    var validator = createArgValidator(method)
+    const validator = createArgValidator(method)
 
-    method.applyValid = function (scope, args) {
-      return validator.applyArray(scope, args)
-    }
-
+    method.applyValid = (scope, args) => validator.applyArray(scope, args)
     method.valid = function () {
       return method.applyValid(this, clone.apply(arguments))
     }
 
-    method.applyObject = function (scope, object) {
-      return validator.applyObject(scope, object)
-    }
-
-    method.validObject = function (object) {
-      return method.applyObject(this, object)
-    }
+    method.applyObject = (scope, object) => validator.applyObject(scope, object)
+    method.validObject = object => method.applyObject(this, object)
   }
 }

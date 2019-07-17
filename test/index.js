@@ -1,13 +1,11 @@
 'use strict'
 
-var expect = require('chai').expect
-var explicit = require('..')
+const { expect } = require('chai')
+const explicit = require('..')
+const noop = () => {}
 
-describe('a regular explicit call should', function () {
-  it('just pass', function (done) {
-    function noop () {
-      return undefined
-    }
+describe('a regular explicit call should', () => {
+  it('just pass', done => {
     expect(explicit({
       $one: true,
       $: noop
@@ -16,12 +14,9 @@ describe('a regular explicit call should', function () {
   })
 })
 
-describe('using explicit should allow modification of', function () {
-  it('a single definitions', function (done) {
-    function noop () {
-      return undefined
-    }
-    var result = explicit({
+describe('using explicit should allow modification of', () => {
+  it('a single definitions', done => {
+    const result = explicit({
       $one: true
     }, null, function (definition) {
       definition.$ = noop
@@ -30,11 +25,8 @@ describe('using explicit should allow modification of', function () {
     done()
   })
 
-  it('a map of definitions', function (done) {
-    function noop () {
-      return undefined
-    }
-    var result = explicit({
+  it('a map of definitions', done => {
+    const result = explicit({
       test: {}
     }, null, function (definition) {
       definition.$ = noop
@@ -45,11 +37,8 @@ describe('using explicit should allow modification of', function () {
     done()
   })
 
-  it('an array of definitions', function (done) {
-    function noop () {
-      return undefined
-    }
-    var result = explicit([{
+  it('an array of definitions', done => {
+    const result = explicit([{
       $one: true
     }, {
       $one: true
@@ -61,15 +50,15 @@ describe('using explicit should allow modification of', function () {
   })
 })
 
-describe('using plugins', function () {
-  it("should allow 'null'", function (done) {
+describe('using plugins', () => {
+  it("should allow 'null'", done => {
     explicit({}, {plugins: null})
     done()
   })
 })
 
-describe('using explicit should break with a', function () {
-  it('number to modify something', function (done) {
+describe('using explicit should break with a', () => {
+  it('number to modify something', done => {
     try {
       explicit(null, null, 1)
     } catch (e) {
